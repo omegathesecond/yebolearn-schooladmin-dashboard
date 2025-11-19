@@ -11,6 +11,7 @@ import {
   Bell,
   Palette,
   Shield,
+  Settings,
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -137,9 +138,17 @@ export function SettingsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
-        <p className="text-muted-foreground">Manage school configuration and preferences</p>
+      {/* Hero Section */}
+      <div className="gradient-primary rounded-xl p-6 text-white">
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight drop-shadow-md">Settings</h1>
+            <p className="text-white/80 mt-1">Manage school configuration and preferences</p>
+          </div>
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+            <Settings className="h-8 w-8 text-white" />
+          </div>
+        </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -164,10 +173,18 @@ export function SettingsPage() {
 
         {/* General Settings */}
         <TabsContent value="general">
-          <Card>
+          <Card className="card-interactive">
+            <div className="h-1 bg-gradient-to-r from-blue-500 to-indigo-500" />
             <CardHeader>
-              <CardTitle>School Information</CardTitle>
-              <CardDescription>Basic information about your school</CardDescription>
+              <div className="flex items-center gap-2">
+                <span className="p-1.5 rounded-lg bg-blue-100">
+                  <Building2 className="h-4 w-4 text-blue-600" />
+                </span>
+                <div>
+                  <CardTitle>School Information</CardTitle>
+                  <CardDescription>Basic information about your school</CardDescription>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
               <form onSubmit={schoolInfoForm.handleSubmit((data) => saveSchoolInfoMutation.mutate(data))} className="space-y-4">
@@ -249,10 +266,18 @@ export function SettingsPage() {
 
         {/* Academic Settings */}
         <TabsContent value="academic">
-          <Card>
+          <Card className="card-interactive">
+            <div className="h-1 bg-gradient-to-r from-indigo-500 to-purple-500" />
             <CardHeader>
-              <CardTitle>Academic Settings</CardTitle>
-              <CardDescription>Configure academic year and grading system</CardDescription>
+              <div className="flex items-center gap-2">
+                <span className="p-1.5 rounded-lg bg-indigo-100">
+                  <Clock className="h-4 w-4 text-indigo-600" />
+                </span>
+                <div>
+                  <CardTitle>Academic Settings</CardTitle>
+                  <CardDescription>Configure academic year and grading system</CardDescription>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
               <form onSubmit={academicForm.handleSubmit((data) => saveAcademicMutation.mutate(data))} className="space-y-4">
@@ -353,13 +378,21 @@ export function SettingsPage() {
 
         {/* Notification Settings */}
         <TabsContent value="notifications">
-          <Card>
+          <Card className="card-interactive">
+            <div className="h-1 bg-gradient-to-r from-purple-500 to-pink-500" />
             <CardHeader>
-              <CardTitle>Notification Preferences</CardTitle>
-              <CardDescription>Configure how you receive alerts and notifications</CardDescription>
+              <div className="flex items-center gap-2">
+                <span className="p-1.5 rounded-lg bg-purple-100">
+                  <Bell className="h-4 w-4 text-purple-600" />
+                </span>
+                <div>
+                  <CardTitle>Notification Preferences</CardTitle>
+                  <CardDescription>Configure how you receive alerts and notifications</CardDescription>
+                </div>
+              </div>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors">
                 <div className="space-y-0.5">
                   <Label htmlFor="emailAlerts">Email Alerts</Label>
                   <p className="text-sm text-muted-foreground">
@@ -375,7 +408,7 @@ export function SettingsPage() {
 
               <Separator />
 
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors">
                 <div className="space-y-0.5">
                   <Label htmlFor="smsAlerts">SMS Alerts</Label>
                   <p className="text-sm text-muted-foreground">
@@ -391,7 +424,7 @@ export function SettingsPage() {
 
               <Separator />
 
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors">
                 <div className="space-y-0.5">
                   <Label htmlFor="attendanceAlerts">Attendance Alerts</Label>
                   <p className="text-sm text-muted-foreground">
@@ -407,7 +440,7 @@ export function SettingsPage() {
 
               <Separator />
 
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors">
                 <div className="space-y-0.5">
                   <Label htmlFor="feeReminders">Fee Reminders</Label>
                   <p className="text-sm text-muted-foreground">
@@ -423,7 +456,7 @@ export function SettingsPage() {
 
               <Separator />
 
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors">
                 <div className="space-y-0.5">
                   <Label htmlFor="parentNotifications">Parent Notifications</Label>
                   <p className="text-sm text-muted-foreground">
@@ -456,10 +489,18 @@ export function SettingsPage() {
 
         {/* Appearance Settings */}
         <TabsContent value="appearance">
-          <Card>
+          <Card className="card-interactive">
+            <div className="h-1 bg-gradient-to-r from-pink-500 to-orange-500" />
             <CardHeader>
-              <CardTitle>Appearance</CardTitle>
-              <CardDescription>Customize the look and feel of the dashboard</CardDescription>
+              <div className="flex items-center gap-2">
+                <span className="p-1.5 rounded-lg bg-pink-100">
+                  <Palette className="h-4 w-4 text-pink-600" />
+                </span>
+                <div>
+                  <CardTitle>Appearance</CardTitle>
+                  <CardDescription>Customize the look and feel of the dashboard</CardDescription>
+                </div>
+              </div>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
@@ -488,7 +529,7 @@ export function SettingsPage() {
                   {['#3b82f6', '#10b981', '#8b5cf6', '#f59e0b', '#ef4444', '#ec4899'].map((color) => (
                     <div
                       key={color}
-                      className="h-8 rounded cursor-pointer hover:ring-2 ring-offset-2"
+                      className="h-8 rounded cursor-pointer hover:ring-2 ring-offset-2 transition-shadow"
                       style={{ backgroundColor: color }}
                     />
                   ))}
@@ -499,7 +540,9 @@ export function SettingsPage() {
 
               <div className="p-4 bg-muted rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <Shield className="h-4 w-4" />
+                  <span className="p-1.5 rounded-lg bg-blue-100">
+                    <Shield className="h-4 w-4 text-blue-600" />
+                  </span>
                   <span className="font-medium">Premium Feature</span>
                 </div>
                 <p className="text-sm text-muted-foreground">

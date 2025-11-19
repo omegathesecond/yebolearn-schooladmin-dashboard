@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, GraduationCap, User, Users } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -43,9 +43,9 @@ const studentSchema = z.object({
 type StudentFormData = z.infer<typeof studentSchema>;
 
 const steps = [
-  { id: 1, name: 'Personal Info', description: 'Basic student information' },
-  { id: 2, name: 'Academic', description: 'Class and enrollment details' },
-  { id: 3, name: 'Guardian', description: 'Parent/Guardian information' },
+  { id: 1, name: 'Personal Info', description: 'Basic student information', icon: User },
+  { id: 2, name: 'Academic', description: 'Class and enrollment details', icon: GraduationCap },
+  { id: 3, name: 'Guardian', description: 'Parent/Guardian information', icon: Users },
 ];
 
 export function AddStudentPage() {
@@ -120,35 +120,78 @@ export function AddStudentPage() {
   };
 
   const progress = (currentStep / steps.length) * 100;
+  const CurrentStepIcon = steps[currentStep - 1].icon;
 
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate('/students')}>
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Add Student</h1>
-          <p className="text-muted-foreground">Enroll a new student</p>
+      {/* Hero Section */}
+      <div className="gradient-primary rounded-xl p-6 text-white">
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate('/students')}
+            className="text-white hover:bg-white/20"
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <div className="flex-1">
+            <h1 className="text-3xl font-bold tracking-tight drop-shadow-md">Add Student</h1>
+            <p className="text-white/80 mt-1">Enroll a new student</p>
+          </div>
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+            <CurrentStepIcon className="h-8 w-8 text-white" />
+          </div>
         </div>
       </div>
 
       {/* Progress */}
-      <div className="space-y-2">
-        <div className="flex justify-between text-sm">
-          <span>Step {currentStep} of {steps.length}</span>
-          <span>{steps[currentStep - 1].name}</span>
-        </div>
-        <Progress value={progress} />
-      </div>
+      <Card className="card-interactive">
+        <div className="h-1 bg-gradient-to-r from-blue-500 to-indigo-500" />
+        <CardContent className="pt-6">
+          <div className="flex justify-between text-sm mb-2">
+            <span className="font-medium">Step {currentStep} of {steps.length}</span>
+            <span className="text-muted-foreground">{steps[currentStep - 1].name}</span>
+          </div>
+          <Progress value={progress} className="h-2" />
+          <div className="flex justify-between mt-4">
+            {steps.map((step) => {
+              const StepIcon = step.icon;
+              return (
+                <div
+                  key={step.id}
+                  className={`flex items-center gap-2 ${
+                    step.id === currentStep ? 'text-primary' : step.id < currentStep ? 'text-green-600' : 'text-muted-foreground'
+                  }`}
+                >
+                  <span className={`p-1.5 rounded-lg ${
+                    step.id === currentStep ? 'bg-blue-100' : step.id < currentStep ? 'bg-green-100' : 'bg-muted'
+                  }`}>
+                    <StepIcon className="h-4 w-4" />
+                  </span>
+                  <span className="text-xs hidden sm:inline">{step.name}</span>
+                </div>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Step 1: Personal Info */}
         {currentStep === 1 && (
-          <Card>
+          <Card className="card-interactive">
+            <div className="h-1 bg-gradient-to-r from-blue-500 to-cyan-500" />
             <CardHeader>
-              <CardTitle>Personal Information</CardTitle>
-              <CardDescription>Enter the student's basic details</CardDescription>
+              <div className="flex items-center gap-2">
+                <span className="p-1.5 rounded-lg bg-blue-100">
+                  <User className="h-4 w-4 text-blue-600" />
+                </span>
+                <div>
+                  <CardTitle>Personal Information</CardTitle>
+                  <CardDescription>Enter the student's basic details</CardDescription>
+                </div>
+              </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
@@ -213,10 +256,18 @@ export function AddStudentPage() {
 
         {/* Step 2: Academic */}
         {currentStep === 2 && (
-          <Card>
+          <Card className="card-interactive">
+            <div className="h-1 bg-gradient-to-r from-indigo-500 to-purple-500" />
             <CardHeader>
-              <CardTitle>Academic Details</CardTitle>
-              <CardDescription>Class and enrollment information</CardDescription>
+              <div className="flex items-center gap-2">
+                <span className="p-1.5 rounded-lg bg-indigo-100">
+                  <GraduationCap className="h-4 w-4 text-indigo-600" />
+                </span>
+                <div>
+                  <CardTitle>Academic Details</CardTitle>
+                  <CardDescription>Class and enrollment information</CardDescription>
+                </div>
+              </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
@@ -284,10 +335,18 @@ export function AddStudentPage() {
 
         {/* Step 3: Guardian */}
         {currentStep === 3 && (
-          <Card>
+          <Card className="card-interactive">
+            <div className="h-1 bg-gradient-to-r from-purple-500 to-pink-500" />
             <CardHeader>
-              <CardTitle>Guardian Information</CardTitle>
-              <CardDescription>Primary parent/guardian contact</CardDescription>
+              <div className="flex items-center gap-2">
+                <span className="p-1.5 rounded-lg bg-purple-100">
+                  <Users className="h-4 w-4 text-purple-600" />
+                </span>
+                <div>
+                  <CardTitle>Guardian Information</CardTitle>
+                  <CardDescription>Primary parent/guardian contact</CardDescription>
+                </div>
+              </div>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2">

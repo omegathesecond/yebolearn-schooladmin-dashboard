@@ -8,6 +8,7 @@ import {
   Users,
   Mail,
   Phone,
+  Briefcase,
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -40,18 +41,18 @@ import { getStaff } from '@/lib/mock-data/staff';
 import type { StaffQuery } from '@/types';
 
 const statusColors: Record<string, string> = {
-  active: 'bg-green-100 text-green-800',
-  inactive: 'bg-gray-100 text-gray-800',
-  on_leave: 'bg-yellow-100 text-yellow-800',
+  active: 'bg-green-100 text-green-700 border-green-200',
+  inactive: 'bg-gray-100 text-gray-700 border-gray-200',
+  on_leave: 'bg-yellow-100 text-yellow-700 border-yellow-200',
 };
 
 const roleColors: Record<string, string> = {
-  teacher: 'bg-blue-100 text-blue-800',
-  admin: 'bg-purple-100 text-purple-800',
-  accountant: 'bg-green-100 text-green-800',
-  librarian: 'bg-orange-100 text-orange-800',
-  nurse: 'bg-pink-100 text-pink-800',
-  other: 'bg-gray-100 text-gray-800',
+  teacher: 'bg-blue-100 text-blue-700 border-blue-200',
+  admin: 'bg-purple-100 text-purple-700 border-purple-200',
+  accountant: 'bg-green-100 text-green-700 border-green-200',
+  librarian: 'bg-orange-100 text-orange-700 border-orange-200',
+  nurse: 'bg-pink-100 text-pink-700 border-pink-200',
+  other: 'bg-gray-100 text-gray-700 border-gray-200',
 };
 
 export function StaffPage() {
@@ -103,20 +104,40 @@ export function StaffPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Staff</h1>
-          <p className="text-muted-foreground">Manage teachers and staff members</p>
+      {/* Hero Section */}
+      <div className="gradient-secondary rounded-xl p-6 text-white">
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight drop-shadow-md">Staff</h1>
+            <p className="text-white/80 mt-1">Manage teachers and staff members</p>
+          </div>
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+            <Users className="h-8 w-8 text-white" />
+          </div>
         </div>
-        <Button onClick={() => navigate('/staff/add')}>
-          <Plus className="mr-2 h-4 w-4" />
-          Add Staff
-        </Button>
+        <div className="flex gap-4 mt-4">
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2">
+            <span className="text-sm">Total: {data?.total || 0} staff members</span>
+          </div>
+          <Button
+            onClick={() => navigate('/staff/add')}
+            className="bg-white/20 backdrop-blur-sm hover:bg-white/30 border-0"
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Add Staff
+          </Button>
+        </div>
       </div>
 
-      <Card>
+      <Card className="card-interactive">
+        <div className="h-1 bg-gradient-to-r from-indigo-500 to-purple-500" />
         <CardHeader>
-          <CardTitle>All Staff</CardTitle>
+          <div className="flex items-center gap-2">
+            <span className="p-1.5 rounded-lg bg-indigo-100">
+              <Briefcase className="h-4 w-4 text-indigo-600" />
+            </span>
+            <CardTitle>All Staff</CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
@@ -162,8 +183,10 @@ export function StaffPage() {
             </div>
           ) : data?.data.length === 0 ? (
             <div className="text-center py-8">
-              <Users className="mx-auto h-12 w-12 text-muted-foreground" />
-              <h3 className="mt-2 text-sm font-semibold">No staff found</h3>
+              <div className="mx-auto w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center mb-4">
+                <Users className="h-8 w-8 text-indigo-600" />
+              </div>
+              <h3 className="text-sm font-semibold">No staff found</h3>
               <p className="mt-1 text-sm text-muted-foreground">
                 Try adjusting your search or filters
               </p>
@@ -192,7 +215,7 @@ export function StaffPage() {
                         <TableCell>
                           <div className="flex items-center gap-3">
                             <Avatar>
-                              <AvatarFallback>
+                              <AvatarFallback className="bg-indigo-100 text-indigo-600">
                                 {getInitials(staff.firstName, staff.lastName)}
                               </AvatarFallback>
                             </Avatar>

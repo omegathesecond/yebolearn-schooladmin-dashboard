@@ -6,6 +6,7 @@ import {
   Search,
   MoreHorizontal,
   GraduationCap,
+  Users,
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -38,10 +39,10 @@ import { getStudents } from '@/lib/mock-data/students';
 import type { StudentsQuery } from '@/types';
 
 const statusColors: Record<string, string> = {
-  active: 'bg-green-100 text-green-800',
-  inactive: 'bg-gray-100 text-gray-800',
-  graduated: 'bg-blue-100 text-blue-800',
-  transferred: 'bg-yellow-100 text-yellow-800',
+  active: 'bg-green-100 text-green-700 border-green-200',
+  inactive: 'bg-gray-100 text-gray-700 border-gray-200',
+  graduated: 'bg-blue-100 text-blue-700 border-blue-200',
+  transferred: 'bg-yellow-100 text-yellow-700 border-yellow-200',
 };
 
 export function StudentsPage() {
@@ -85,20 +86,40 @@ export function StudentsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Students</h1>
-          <p className="text-muted-foreground">Manage student enrollment and records</p>
+      {/* Hero Section */}
+      <div className="gradient-primary rounded-xl p-6 text-white">
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight drop-shadow-md">Students</h1>
+            <p className="text-white/80 mt-1">Manage student enrollment and records</p>
+          </div>
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+            <GraduationCap className="h-8 w-8 text-white" />
+          </div>
         </div>
-        <Button onClick={() => navigate('/students/add')}>
-          <Plus className="mr-2 h-4 w-4" />
-          Add Student
-        </Button>
+        <div className="flex gap-4 mt-4">
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2">
+            <span className="text-sm">Total: {data?.total || 0} students</span>
+          </div>
+          <Button
+            onClick={() => navigate('/students/add')}
+            className="bg-white/20 backdrop-blur-sm hover:bg-white/30 border-0"
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Add Student
+          </Button>
+        </div>
       </div>
 
-      <Card>
+      <Card className="card-interactive">
+        <div className="h-1 bg-gradient-to-r from-blue-500 to-indigo-500" />
         <CardHeader>
-          <CardTitle>All Students</CardTitle>
+          <div className="flex items-center gap-2">
+            <span className="p-1.5 rounded-lg bg-blue-100">
+              <Users className="h-4 w-4 text-blue-600" />
+            </span>
+            <CardTitle>All Students</CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
@@ -141,8 +162,10 @@ export function StudentsPage() {
             </div>
           ) : data?.data.length === 0 ? (
             <div className="text-center py-8">
-              <GraduationCap className="mx-auto h-12 w-12 text-muted-foreground" />
-              <h3 className="mt-2 text-sm font-semibold">No students found</h3>
+              <div className="mx-auto w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4">
+                <GraduationCap className="h-8 w-8 text-blue-600" />
+              </div>
+              <h3 className="text-sm font-semibold">No students found</h3>
               <p className="mt-1 text-sm text-muted-foreground">
                 Try adjusting your search or filters
               </p>
@@ -171,7 +194,7 @@ export function StudentsPage() {
                         <TableCell>
                           <div className="flex items-center gap-3">
                             <Avatar>
-                              <AvatarFallback>
+                              <AvatarFallback className="bg-blue-100 text-blue-600">
                                 {getInitials(student.firstName, student.lastName)}
                               </AvatarFallback>
                             </Avatar>
@@ -187,7 +210,11 @@ export function StudentsPage() {
                         </TableCell>
                         <TableCell>{student.admissionNumber}</TableCell>
                         <TableCell>{student.className}</TableCell>
-                        <TableCell>{student.grade}</TableCell>
+                        <TableCell>
+                          <Badge variant="outline" className="bg-indigo-100 text-indigo-700 border-indigo-200">
+                            Grade {student.grade}
+                          </Badge>
+                        </TableCell>
                         <TableCell>
                           <Badge variant="outline" className={statusColors[student.status]}>
                             {student.status}

@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeft, Check } from 'lucide-react';
+import { ArrowLeft, Check, Users, User, Briefcase, Phone } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -77,22 +77,41 @@ export function AddStaffPage() {
 
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate('/staff')}>
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Add Staff</h1>
-          <p className="text-muted-foreground">Add a new staff member</p>
+      {/* Hero Section */}
+      <div className="gradient-secondary rounded-xl p-6 text-white">
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate('/staff')}
+            className="text-white hover:bg-white/20"
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <div className="flex-1">
+            <h1 className="text-3xl font-bold tracking-tight drop-shadow-md">Add Staff</h1>
+            <p className="text-white/80 mt-1">Add a new staff member</p>
+          </div>
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+            <Users className="h-8 w-8 text-white" />
+          </div>
         </div>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Personal Information */}
-        <Card>
+        <Card className="card-interactive">
+          <div className="h-1 bg-gradient-to-r from-blue-500 to-cyan-500" />
           <CardHeader>
-            <CardTitle>Personal Information</CardTitle>
-            <CardDescription>Basic staff details</CardDescription>
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 rounded-lg bg-blue-100">
+                <User className="h-4 w-4 text-blue-600" />
+              </span>
+              <div>
+                <CardTitle>Personal Information</CardTitle>
+                <CardDescription>Basic staff details</CardDescription>
+              </div>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2">
@@ -163,10 +182,18 @@ export function AddStaffPage() {
         </Card>
 
         {/* Employment Details */}
-        <Card>
+        <Card className="card-interactive">
+          <div className="h-1 bg-gradient-to-r from-indigo-500 to-purple-500" />
           <CardHeader>
-            <CardTitle>Employment Details</CardTitle>
-            <CardDescription>Role and department information</CardDescription>
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 rounded-lg bg-indigo-100">
+                <Briefcase className="h-4 w-4 text-indigo-600" />
+              </span>
+              <div>
+                <CardTitle>Employment Details</CardTitle>
+                <CardDescription>Role and department information</CardDescription>
+              </div>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2">
@@ -224,10 +251,18 @@ export function AddStaffPage() {
         </Card>
 
         {/* Emergency Contact */}
-        <Card>
+        <Card className="card-interactive">
+          <div className="h-1 bg-gradient-to-r from-purple-500 to-pink-500" />
           <CardHeader>
-            <CardTitle>Emergency Contact</CardTitle>
-            <CardDescription>Contact in case of emergency</CardDescription>
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 rounded-lg bg-purple-100">
+                <Phone className="h-4 w-4 text-purple-600" />
+              </span>
+              <div>
+                <CardTitle>Emergency Contact</CardTitle>
+                <CardDescription>Contact in case of emergency</CardDescription>
+              </div>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2">

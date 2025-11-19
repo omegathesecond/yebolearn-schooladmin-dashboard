@@ -8,6 +8,7 @@ import {
   Clock,
   AlertCircle,
   Users,
+  Calendar,
 } from 'lucide-react';
 import {
   BarChart,
@@ -49,10 +50,10 @@ import { mockClasses } from '@/lib/mock-data/students';
 import type { AttendanceRecord } from '@/types';
 
 const statusConfig = {
-  present: { label: 'Present', color: 'bg-green-100 text-green-800', icon: Check },
-  absent: { label: 'Absent', color: 'bg-red-100 text-red-800', icon: X },
-  late: { label: 'Late', color: 'bg-yellow-100 text-yellow-800', icon: Clock },
-  excused: { label: 'Excused', color: 'bg-blue-100 text-blue-800', icon: AlertCircle },
+  present: { label: 'Present', color: 'bg-green-100 text-green-800 border-green-200', icon: Check },
+  absent: { label: 'Absent', color: 'bg-red-100 text-red-800 border-red-200', icon: X },
+  late: { label: 'Late', color: 'bg-yellow-100 text-yellow-800 border-yellow-200', icon: Clock },
+  excused: { label: 'Excused', color: 'bg-blue-100 text-blue-800 border-blue-200', icon: AlertCircle },
 };
 
 export function AttendancePage() {
@@ -134,19 +135,66 @@ export function AttendancePage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Attendance</h1>
-          <p className="text-muted-foreground">{today}</p>
+      {/* Hero Section */}
+      <div className="gradient-primary rounded-xl p-6 text-white">
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight drop-shadow-md">Attendance</h1>
+            <p className="text-white/80 mt-1">{today}</p>
+          </div>
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+            <ClipboardCheck className="h-8 w-8 text-white" />
+          </div>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+            <div className="flex items-center gap-2">
+              <ClipboardCheck className="h-4 w-4" />
+              <span className="text-sm font-medium">Classes Marked</span>
+            </div>
+            <p className="text-2xl font-bold mt-1">
+              {classesData?.filter(c => c.isMarked).length || 0}/{classesData?.length || 0}
+            </p>
+          </div>
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+            <div className="flex items-center gap-2">
+              <Check className="h-4 w-4" />
+              <span className="text-sm font-medium">Present</span>
+            </div>
+            <p className="text-2xl font-bold mt-1">
+              {classesData?.reduce((sum, c) => sum + c.attendanceStats.present, 0) || 0}
+            </p>
+          </div>
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+            <div className="flex items-center gap-2">
+              <X className="h-4 w-4" />
+              <span className="text-sm font-medium">Absent</span>
+            </div>
+            <p className="text-2xl font-bold mt-1">
+              {classesData?.reduce((sum, c) => sum + c.attendanceStats.absent, 0) || 0}
+            </p>
+          </div>
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+            <div className="flex items-center gap-2">
+              <Clock className="h-4 w-4" />
+              <span className="text-sm font-medium">Late</span>
+            </div>
+            <p className="text-2xl font-bold mt-1">
+              {classesData?.reduce((sum, c) => sum + c.attendanceStats.late, 0) || 0}
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Overview Stats */}
       <div className="grid gap-4 md:grid-cols-4">
-        <Card>
+        <Card className="card-interactive">
+          <div className="h-1 bg-gradient-to-r from-blue-500 to-blue-500" />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Classes Marked</CardTitle>
-            <ClipboardCheck className="h-4 w-4 text-muted-foreground" />
+            <span className="p-1.5 rounded-lg bg-blue-100">
+              <ClipboardCheck className="h-4 w-4 text-blue-600" />
+            </span>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -154,15 +202,18 @@ export function AttendancePage() {
             </div>
             <Progress
               value={classesData ? (classesData.filter(c => c.isMarked).length / classesData.length) * 100 : 0}
-              className="mt-2"
+              className="mt-2 h-2"
             />
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="card-interactive">
+          <div className="h-1 bg-gradient-to-r from-green-500 to-green-500" />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Present Today</CardTitle>
-            <Check className="h-4 w-4 text-green-600" />
+            <span className="p-1.5 rounded-lg bg-green-100">
+              <Check className="h-4 w-4 text-green-600" />
+            </span>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">
@@ -172,10 +223,13 @@ export function AttendancePage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="card-interactive">
+          <div className="h-1 bg-gradient-to-r from-red-500 to-red-500" />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Absent Today</CardTitle>
-            <X className="h-4 w-4 text-red-600" />
+            <span className="p-1.5 rounded-lg bg-red-100">
+              <X className="h-4 w-4 text-red-600" />
+            </span>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-600">
@@ -185,10 +239,13 @@ export function AttendancePage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="card-interactive">
+          <div className="h-1 bg-gradient-to-r from-yellow-500 to-yellow-500" />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Late Today</CardTitle>
-            <Clock className="h-4 w-4 text-yellow-600" />
+            <span className="p-1.5 rounded-lg bg-yellow-100">
+              <Clock className="h-4 w-4 text-yellow-600" />
+            </span>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-yellow-600">
@@ -202,12 +259,18 @@ export function AttendancePage() {
       <div className="grid gap-4 md:grid-cols-3">
         {/* Class Selection & Marking */}
         <div className="md:col-span-2 space-y-4">
-          <Card>
+          <Card className="card-interactive">
+            <div className="h-1 bg-gradient-to-r from-blue-500 to-indigo-500" />
             <CardHeader>
               <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle>Mark Attendance</CardTitle>
-                  <CardDescription>Select a class to mark attendance</CardDescription>
+                <div className="flex items-center gap-2">
+                  <span className="p-1.5 rounded-lg bg-blue-100">
+                    <Calendar className="h-4 w-4 text-blue-600" />
+                  </span>
+                  <div>
+                    <CardTitle>Mark Attendance</CardTitle>
+                    <CardDescription>Select a class to mark attendance</CardDescription>
+                  </div>
                 </div>
                 <Select value={selectedClass} onValueChange={setSelectedClass}>
                   <SelectTrigger className="w-[180px]">
@@ -226,7 +289,9 @@ export function AttendancePage() {
             <CardContent>
               {!selectedClass ? (
                 <div className="text-center py-8">
-                  <Users className="mx-auto h-12 w-12 text-muted-foreground" />
+                  <div className="mx-auto w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4">
+                    <Users className="h-8 w-8 text-blue-600" />
+                  </div>
                   <h3 className="mt-2 text-sm font-semibold">Select a class</h3>
                   <p className="mt-1 text-sm text-muted-foreground">
                     Choose a class to mark attendance
@@ -292,7 +357,7 @@ export function AttendancePage() {
                               <TableCell>
                                 <div className="flex items-center gap-3">
                                   <Avatar className="h-8 w-8">
-                                    <AvatarFallback className="text-xs">
+                                    <AvatarFallback className="text-xs bg-blue-100 text-blue-600">
                                       {getInitials(record.studentName || '')}
                                     </AvatarFallback>
                                   </Avatar>
@@ -336,10 +401,18 @@ export function AttendancePage() {
         </div>
 
         {/* Weekly Trend */}
-        <Card>
+        <Card className="card-interactive">
+          <div className="h-1 bg-gradient-to-r from-indigo-500 to-purple-500" />
           <CardHeader>
-            <CardTitle>Weekly Trend</CardTitle>
-            <CardDescription>Attendance this week</CardDescription>
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 rounded-lg bg-indigo-100">
+                <Calendar className="h-4 w-4 text-indigo-600" />
+              </span>
+              <div>
+                <CardTitle>Weekly Trend</CardTitle>
+                <CardDescription>Attendance this week</CardDescription>
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="h-[300px]">
@@ -360,17 +433,25 @@ export function AttendancePage() {
       </div>
 
       {/* Classes Overview */}
-      <Card>
+      <Card className="card-interactive">
+        <div className="h-1 bg-gradient-to-r from-purple-500 to-pink-500" />
         <CardHeader>
-          <CardTitle>Classes Overview</CardTitle>
-          <CardDescription>Today's attendance by class</CardDescription>
+          <div className="flex items-center gap-2">
+            <span className="p-1.5 rounded-lg bg-purple-100">
+              <Users className="h-4 w-4 text-purple-600" />
+            </span>
+            <div>
+              <CardTitle>Classes Overview</CardTitle>
+              <CardDescription>Today's attendance by class</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {classesData?.map(cls => (
               <div
                 key={cls.id}
-                className="flex items-center justify-between p-4 border rounded-lg cursor-pointer hover:bg-muted/50"
+                className="flex items-center justify-between p-4 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors"
                 onClick={() => setSelectedClass(cls.id)}
               >
                 <div>
@@ -390,7 +471,9 @@ export function AttendancePage() {
                       </p>
                     </>
                   ) : (
-                    <Badge variant="outline">Not marked</Badge>
+                    <Badge variant="outline" className="bg-yellow-100 text-yellow-700 border-yellow-200">
+                      Not marked
+                    </Badge>
                   )}
                 </div>
               </div>

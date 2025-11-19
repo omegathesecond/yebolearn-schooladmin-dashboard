@@ -7,6 +7,7 @@ import {
   CheckCircle,
   Search,
   Clock,
+  CreditCard,
 } from 'lucide-react';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -34,11 +35,11 @@ import { getInvoices, getFeeStats, mockFeeStructures } from '@/lib/mock-data/fee
 import type { InvoiceQuery } from '@/types';
 
 const statusColors: Record<string, string> = {
-  draft: 'bg-gray-100 text-gray-800',
-  pending: 'bg-yellow-100 text-yellow-800',
-  paid: 'bg-green-100 text-green-800',
-  overdue: 'bg-red-100 text-red-800',
-  cancelled: 'bg-gray-100 text-gray-800',
+  draft: 'bg-gray-100 text-gray-700 border-gray-200',
+  pending: 'bg-yellow-100 text-yellow-700 border-yellow-200',
+  paid: 'bg-green-100 text-green-700 border-green-200',
+  overdue: 'bg-red-100 text-red-700 border-red-200',
+  cancelled: 'bg-gray-100 text-gray-700 border-gray-200',
 };
 
 export function FeesPage() {
@@ -92,17 +93,66 @@ export function FeesPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Fees & Billing</h1>
-        <p className="text-muted-foreground">Manage fee structures and student invoices</p>
+      {/* Hero Section */}
+      <div className="gradient-primary rounded-xl p-6 text-white">
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight drop-shadow-md">Fees & Billing</h1>
+            <p className="text-white/80 mt-1">Manage fee structures and student invoices</p>
+          </div>
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+            <CreditCard className="h-8 w-8 text-white" />
+          </div>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+            <div className="flex items-center gap-2">
+              <DollarSign className="h-4 w-4" />
+              <span className="text-sm font-medium">Expected</span>
+            </div>
+            <p className="text-xl font-bold mt-1">
+              {stats ? formatCurrency(stats.totalExpected) : 'E0'}
+            </p>
+          </div>
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="h-4 w-4" />
+              <span className="text-sm font-medium">Collected</span>
+            </div>
+            <p className="text-xl font-bold mt-1">
+              {stats ? formatCurrency(stats.totalCollected) : 'E0'}
+            </p>
+          </div>
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+            <div className="flex items-center gap-2">
+              <Clock className="h-4 w-4" />
+              <span className="text-sm font-medium">Pending</span>
+            </div>
+            <p className="text-xl font-bold mt-1">
+              {stats ? formatCurrency(stats.pendingAmount) : 'E0'}
+            </p>
+          </div>
+          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+            <div className="flex items-center gap-2">
+              <AlertTriangle className="h-4 w-4" />
+              <span className="text-sm font-medium">Overdue</span>
+            </div>
+            <p className="text-xl font-bold mt-1">
+              {stats ? formatCurrency(stats.overdueAmount) : 'E0'}
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <Card className="card-interactive">
+          <div className="h-1 bg-gradient-to-r from-blue-500 to-blue-500" />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Expected</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <span className="p-1.5 rounded-lg bg-blue-100">
+              <DollarSign className="h-4 w-4 text-blue-600" />
+            </span>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -114,10 +164,13 @@ export function FeesPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="card-interactive">
+          <div className="h-1 bg-gradient-to-r from-green-500 to-green-500" />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Collected</CardTitle>
-            <CheckCircle className="h-4 w-4 text-green-600" />
+            <span className="p-1.5 rounded-lg bg-green-100">
+              <CheckCircle className="h-4 w-4 text-green-600" />
+            </span>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">
@@ -129,10 +182,13 @@ export function FeesPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="card-interactive">
+          <div className="h-1 bg-gradient-to-r from-yellow-500 to-yellow-500" />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Pending</CardTitle>
-            <Clock className="h-4 w-4 text-yellow-600" />
+            <span className="p-1.5 rounded-lg bg-yellow-100">
+              <Clock className="h-4 w-4 text-yellow-600" />
+            </span>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-yellow-600">
@@ -144,10 +200,13 @@ export function FeesPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="card-interactive">
+          <div className="h-1 bg-gradient-to-r from-red-500 to-red-500" />
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Overdue</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-red-600" />
+            <span className="p-1.5 rounded-lg bg-red-100">
+              <AlertTriangle className="h-4 w-4 text-red-600" />
+            </span>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-600">
@@ -161,10 +220,18 @@ export function FeesPage() {
       </div>
 
       {/* Collection Progress */}
-      <Card>
+      <Card className="card-interactive">
+        <div className="h-1 bg-gradient-to-r from-indigo-500 to-purple-500" />
         <CardHeader>
-          <CardTitle>Collection Progress</CardTitle>
-          <CardDescription>Current term fee collection rate</CardDescription>
+          <div className="flex items-center gap-2">
+            <span className="p-1.5 rounded-lg bg-indigo-100">
+              <DollarSign className="h-4 w-4 text-indigo-600" />
+            </span>
+            <div>
+              <CardTitle>Collection Progress</CardTitle>
+              <CardDescription>Current term fee collection rate</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
@@ -172,7 +239,7 @@ export function FeesPage() {
               <span>Collected</span>
               <span className="font-medium">{stats?.collectionRate || 0}%</span>
             </div>
-            <Progress value={stats?.collectionRate || 0} />
+            <Progress value={stats?.collectionRate || 0} className="h-2" />
           </div>
         </CardContent>
       </Card>
@@ -185,10 +252,18 @@ export function FeesPage() {
         </TabsList>
 
         <TabsContent value="invoices" className="space-y-4">
-          <Card>
+          <Card className="card-interactive">
+            <div className="h-1 bg-gradient-to-r from-blue-500 to-indigo-500" />
             <CardHeader>
-              <CardTitle>Student Invoices</CardTitle>
-              <CardDescription>Manage and track all invoices</CardDescription>
+              <div className="flex items-center gap-2">
+                <span className="p-1.5 rounded-lg bg-blue-100">
+                  <FileText className="h-4 w-4 text-blue-600" />
+                </span>
+                <div>
+                  <CardTitle>Student Invoices</CardTitle>
+                  <CardDescription>Manage and track all invoices</CardDescription>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
               <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -219,8 +294,10 @@ export function FeesPage() {
                 </div>
               ) : invoicesData?.data.length === 0 ? (
                 <div className="text-center py-8">
-                  <FileText className="mx-auto h-12 w-12 text-muted-foreground" />
-                  <h3 className="mt-2 text-sm font-semibold">No invoices found</h3>
+                  <div className="mx-auto w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4">
+                    <FileText className="h-8 w-8 text-blue-600" />
+                  </div>
+                  <h3 className="text-sm font-semibold">No invoices found</h3>
                   <p className="mt-1 text-sm text-muted-foreground">
                     Try adjusting your filters
                   </p>
@@ -296,21 +373,29 @@ export function FeesPage() {
         </TabsContent>
 
         <TabsContent value="structures" className="space-y-4">
-          <Card>
+          <Card className="card-interactive">
+            <div className="h-1 bg-gradient-to-r from-purple-500 to-pink-500" />
             <CardHeader>
-              <CardTitle>Fee Structures</CardTitle>
-              <CardDescription>Define fee types and amounts</CardDescription>
+              <div className="flex items-center gap-2">
+                <span className="p-1.5 rounded-lg bg-purple-100">
+                  <CreditCard className="h-4 w-4 text-purple-600" />
+                </span>
+                <div>
+                  <CardTitle>Fee Structures</CardTitle>
+                  <CardDescription>Define fee types and amounts</CardDescription>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
               <div className="grid gap-4 md:grid-cols-2">
                 {mockFeeStructures.map((fee) => (
                   <div
                     key={fee.id}
-                    className="p-4 border rounded-lg hover:bg-muted/50 cursor-pointer"
+                    className="p-4 border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors"
                   >
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="font-medium">{fee.name}</h4>
-                      <Badge variant={fee.isActive ? 'default' : 'secondary'}>
+                      <Badge className={fee.isActive ? 'bg-green-100 text-green-700 border-green-200' : 'bg-gray-100 text-gray-700 border-gray-200'}>
                         {fee.isActive ? 'Active' : 'Inactive'}
                       </Badge>
                     </div>
@@ -323,7 +408,7 @@ export function FeesPage() {
                     <p className="text-sm text-muted-foreground mb-2">{fee.description}</p>
                     <div className="flex flex-wrap gap-1">
                       {fee.grades.map((grade) => (
-                        <Badge key={grade} variant="outline" className="text-xs">
+                        <Badge key={grade} variant="outline" className="text-xs bg-indigo-100 text-indigo-700 border-indigo-200">
                           Grade {grade}
                         </Badge>
                       ))}

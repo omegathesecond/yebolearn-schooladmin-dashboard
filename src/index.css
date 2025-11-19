@@ -59,3 +59,18 @@
     min-height: 100vh;
   }
 }
+
+@layer components {
+  .gradient-primary {
+    @apply bg-gradient-to-br from-blue-600 via-indigo-500 to-purple-500;
+  }
+  .gradient-secondary {
+    @apply bg-gradient-to-br from-cyan-600 via-blue-500 to-indigo-500;
+  }
+  .gradient-accent {
+    @apply bg-gradient-to-br from-indigo-600 via-purple-500 to-pink-500;
+  }
+  .card-interactive {
+    @apply transition-all duration-200 hover:shadow-md hover:scale-[1.01];
+  }
+}
