@@ -7,9 +7,7 @@ import {
   TrendingDown,
   Minus,
   Search,
-  Filter,
   BarChart3,
-  PieChart,
   Eye,
   Bell,
   ClipboardList,
@@ -64,8 +62,6 @@ const RISK_COLORS = {
   medium: '#f59e0b',
   high: '#ef4444',
 };
-
-const GRADE_COLORS = ['#10b981', '#22c55e', '#f59e0b', '#f97316', '#ef4444'];
 
 export default function StudentAnalyticsPage() {
   const navigate = useNavigate();

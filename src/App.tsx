@@ -20,6 +20,8 @@ import { ClassesPage } from '@/pages/ClassesPage';
 import { SettingsPage } from '@/pages/SettingsPage';
 import StudentAnalyticsPage from '@/pages/analytics/StudentAnalyticsPage';
 import TeacherPerformancePage from '@/pages/analytics/TeacherPerformancePage';
+import StudentDetailAnalysisPage from '@/pages/analytics/StudentDetailAnalysisPage';
+import TeacherDetailAnalysisPage from '@/pages/analytics/TeacherDetailAnalysisPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -82,7 +84,9 @@ function AppRoutes() {
                 <Route path="/fees" element={<FeesPage />} />
                 <Route path="/classes" element={<ClassesPage />} />
                 <Route path="/analytics/students" element={<StudentAnalyticsPage />} />
+                <Route path="/analytics/students/:id" element={<StudentDetailAnalysisPage />} />
                 <Route path="/analytics/teachers" element={<TeacherPerformancePage />} />
+                <Route path="/analytics/teachers/:id" element={<TeacherDetailAnalysisPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
               </Routes>
             </Layout>

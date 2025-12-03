@@ -35,54 +35,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (credentials: LoginCredentials): Promise<void> => {
-    // In mock mode, simulate login
-    const useMock = import.meta.env.VITE_USE_MOCK_DATA === 'true';
+    // Demo mode - accept any credentials
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-    if (useMock) {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+    const mockResponse: AuthResponse = {
+      user: {
+        id: '1',
+        email: credentials.email,
+        firstName: 'John',
+        lastName: 'Principal',
+        role: 'school_admin',
+        schoolId: 'school-1',
+        avatar: '',
+        createdAt: new Date().toISOString(),
+      },
+      accessToken: 'mock-token-' + Date.now(),
+      refreshToken: 'mock-refresh-' + Date.now(),
+    };
 
-      // Mock validation
-      if (credentials.email === 'admin@school.com' && credentials.password === 'password') {
-        const mockResponse: AuthResponse = {
-          user: {
-            id: '1',
-            email: credentials.email,
-            firstName: 'John',
-            lastName: 'Principal',
-            role: 'school_admin',
-            schoolId: 'school-1',
-            avatar: '',
-            createdAt: new Date().toISOString(),
-          },
-          accessToken: 'mock-token-' + Date.now(),
-          refreshToken: 'mock-refresh-' + Date.now(),
-        };
-
-        localStorage.setItem(TOKEN_KEY, mockResponse.accessToken);
-        localStorage.setItem(USER_KEY, JSON.stringify(mockResponse.user));
-        setUser(mockResponse.user);
-        return;
-      }
-      throw new Error('Invalid credentials');
-    }
-
-    // Real API call would go here
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(credentials),
-    });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || 'Login failed');
-    }
-
-    const data: AuthResponse = await response.json();
-    localStorage.setItem(TOKEN_KEY, data.accessToken);
-    localStorage.setItem(USER_KEY, JSON.stringify(data.user));
-    setUser(data.user);
+    localStorage.setItem(TOKEN_KEY, mockResponse.accessToken);
+    localStorage.setItem(USER_KEY, JSON.stringify(mockResponse.user));
+    setUser(mockResponse.user);
   };
 
   const logout = () => {

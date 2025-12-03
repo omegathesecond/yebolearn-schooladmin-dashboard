@@ -173,3 +173,51 @@ export interface TeacherAnalyticsFilters {
   department?: string;
   performanceTier?: 'excellent' | 'good' | 'average' | 'below';
 }
+
+// Student Detailed Analysis (AI-powered breakdown)
+export interface StudentDetailedAnalysis {
+  student: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    admissionNumber: string;
+    className: string;
+    gradeLevel: string;
+    avatar?: string;
+    teacherName: string;
+  };
+  metrics: {
+    currentAverage: number;
+    gradeLetter: string;
+    classRank: number;
+    classSize: number;
+    attendanceRate: number;
+    assignmentsCompleted: number;
+    assignmentsTotal: number;
+    trend: 'up' | 'down' | 'stable';
+    riskLevel: 'none' | 'low' | 'medium' | 'high';
+  };
+  subjects: {
+    id: string;
+    name: string;
+    grade: number;
+    gradeLetter: string;
+    trend: 'up' | 'down' | 'stable';
+    teacherName: string;
+    lastAssessment: string;
+    aiInsights: string;
+  }[];
+  performanceTrend: {
+    month: string;
+    average: number;
+    attendance: number;
+  }[];
+  strengths: string[];
+  areasForImprovement: string[];
+  aiRecommendations: string[];
+  recentActivity: {
+    date: string;
+    type: 'assessment' | 'attendance' | 'behavior' | 'achievement';
+    description: string;
+  }[];
+}

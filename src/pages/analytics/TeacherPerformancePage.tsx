@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Users,
   TrendingUp,
@@ -52,6 +53,7 @@ import {
 } from '@/lib/mock-data/analytics';
 
 export default function TeacherPerformancePage() {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState<string>('all');
 
@@ -313,7 +315,9 @@ export default function TeacherPerformancePage() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => navigate(`/analytics/teachers/${teacher.id}`)}
+                        >
                           <Eye className="h-4 w-4 mr-2" />
                           View Details
                         </DropdownMenuItem>
